@@ -64,7 +64,6 @@ module.exports = function(router){
 
       axios.get('https://my.mlh.io/api/v2/user.json?access_token=' + mlhToken)
       .then(function (response) {
-        console.log("user exists: " + UserController.doesEmailExist(response.data.data.email));
         if (UserController.doesEmailExist(response.data.data.email)) {
           UserController.mlhLogin(response.data.data.email,
             function(err, token, user){
@@ -83,7 +82,7 @@ module.exports = function(router){
           UserController.createUser(response.data.data.email, randPassword,
             function(err, user){
               if (err){
-                return res.status(500).send(err);
+                return res.status(400).send(err);
               }
 
               user.mlhToken = mlhToken;
@@ -93,7 +92,7 @@ module.exports = function(router){
         }
       })
       .catch(function (error) {
-        return res.status(500).send(error);
+        return res.status(400).send(error);
       });
   }); 
 

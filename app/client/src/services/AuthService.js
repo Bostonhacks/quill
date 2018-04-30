@@ -10,6 +10,10 @@ angular.module('reg')
 
       function loginSuccess(data, cb){
         // Winner winner you get a token
+        if (data.mlhToken) {
+          data.user.mlhToken = data.mlhToken;
+        }
+
         Session.create(data.token, data.user);
 
         if (cb){
@@ -47,7 +51,9 @@ angular.module('reg')
             loginSuccess(data, onSuccess);
           })
           .error(function(data){
-            loginFailure(data, onFailure);
+            if (statusCode === 400){
+              Session.destroy(loginFailure);
+            }
           });
       };
 
