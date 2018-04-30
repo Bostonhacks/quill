@@ -10,8 +10,6 @@ angular.module('reg')
 
       function loginSuccess(data, cb){
         // Winner winner you get a token
-        console.log("got some data")
-        console.log(data)
         Session.create(data.token, data.user);
 
         if (cb){
@@ -56,8 +54,8 @@ angular.module('reg')
       authService.authorizeMLH = function(onSuccess, onFailure) {
         return $http
           .get('/auth/mlh/authorize')
-          .success(function(data){
-            loginSuccess(data, onSuccess);
+          .success(function(urlstring){
+            window.location.href = urlstring;
           })
           .error(function(data){
             loginFailure(data, onFailure);

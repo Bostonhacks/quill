@@ -99,7 +99,7 @@ module.exports = function(router){
 
   router.get('/mlh/authorize',
     function(req, res, next){
-      res.redirect('https://my.mlh.io/oauth/authorize?client_id=' + process.env.MLH_CLIENT_ID + '&redirect_uri=' + process.env.REDIRECT_URI + '&response_type=token&scope=email+demographics');
+      res.send('https://my.mlh.io/oauth/authorize?client_id=' + process.env.MLH_CLIENT_ID + '&redirect_uri=' + process.env.REDIRECT_URI + '&response_type=token&scope=email+demographics');
   }); 
 
   /**
