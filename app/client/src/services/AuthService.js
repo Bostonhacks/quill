@@ -10,6 +10,8 @@ angular.module('reg')
 
       function loginSuccess(data, cb){
         // Winner winner you get a token
+        console.log("got some data")
+        console.log(data)
         Session.create(data.token, data.user);
 
         if (cb){
@@ -30,6 +32,30 @@ angular.module('reg')
             email: email,
             password: password
           })
+          .success(function(data){
+            loginSuccess(data, onSuccess);
+          })
+          .error(function(data){
+            loginFailure(data, onFailure);
+          });
+      };
+
+      authService.loginWithMLH = function(token, onSuccess, onFailure) {
+        return $http
+          .post('/auth/mlh/login', {
+            token: token
+          })
+          .success(function(data){
+            loginSuccess(data, onSuccess);
+          })
+          .error(function(data){
+            loginFailure(data, onFailure);
+          });
+      };
+
+      authService.authorizeMLH = function(onSuccess, onFailure) {
+        return $http
+          .get('/auth/mlh/authorize')
           .success(function(data){
             loginSuccess(data, onSuccess);
           })

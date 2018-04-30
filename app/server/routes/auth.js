@@ -1,6 +1,8 @@
 var _         = require('underscore');
 var jwt       = require('jsonwebtoken');
 var validator = require('validator');
+var axios     = require('axios');
+var crypto    = require("crypto");
 
 var SettingsController = require('../controllers/SettingsController');
 var UserController = require('../controllers/UserController');
@@ -54,7 +56,37 @@ module.exports = function(router){
           });
       }
 
-  });
+  }); 
+
+  router.post('/mlh/login',
+    function(req, res, next){
+      var token = req.body.token;
+
+      axios.get('https://my.mlh.io/api/v2/user.json?access_token=' + token)
+      .then(function (response) {
+        var password = crypto.randomBytes(20).toString('hex');
+
+        UserController.createUser(response.data.data.email, password,
+          function(err, user){
+            if (err){
+              console.error(err);
+              return res.status(500).send(err);
+            }
+
+            user.mlhToken = token;
+
+            return res.json(user);
+        });
+      })
+      .catch(function (error) {
+        return res.status(500).send(error);
+      });
+  }); 
+
+  router.get('/mlh/authorize',
+    function(req, res, next){
+      res.redirect('https://my.mlh.io/oauth/authorize?client_id=' + process.env.MLH_CLIENT_ID + '&redirect_uri=' + process.env.REDIRECT_URI + '&response_type=token&scope=email+demographics');
+  }); 
 
   /**
    * Register a user with a username (email) and password.

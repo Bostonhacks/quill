@@ -7,6 +7,11 @@ angular.module('reg')
     'Utils',
     'AuthService',
     function($scope, $http, $state, settings, Utils, AuthService){
+      var mlhToken = getHashValue("access_token");
+
+      if (mlhToken) {
+        AuthService.loginWithMLH(mlhToken, onSuccess, onError);
+      }
 
       // Is registration open?
       var Settings = settings.data;
@@ -16,10 +21,12 @@ angular.module('reg')
       $scope.loginState = 'login';
 
       function onSuccess() {
+        console.log("success")
         $state.go('app.dashboard');
       }
 
       function onError(data){
+        console.log("error")
         $scope.error = data.message;
       }
 
@@ -27,10 +34,20 @@ angular.module('reg')
         $scope.error = null;
       }
 
+      function getHashValue(key) {
+        var matches = location.hash.match(new RegExp(key+'=([^&]*)'));
+        return matches ? matches[1] : null;
+      }
+
       $scope.login = function(){
         resetError();
         AuthService.loginWithPassword(
           $scope.email, $scope.password, onSuccess, onError);
+      };
+
+      $scope.authorizeMLH = function(){
+        resetError();
+        AuthService.authorizeMLH(onSuccess, onError);
       };
 
       $scope.register = function(){
