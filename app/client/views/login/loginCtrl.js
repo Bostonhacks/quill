@@ -21,12 +21,10 @@ angular.module('reg')
       $scope.loginState = 'login';
 
       function onSuccess() {
-        console.log("success")
         $state.go('app.dashboard');
       }
 
       function onError(data){
-        console.log("error")
         $scope.error = data.message;
       }
 

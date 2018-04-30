@@ -60,23 +60,37 @@ module.exports = function(router){
 
   router.post('/mlh/login',
     function(req, res, next){
-      var token = req.body.token;
+      var mlhToken = req.body.token;
 
-      axios.get('https://my.mlh.io/api/v2/user.json?access_token=' + token)
+      axios.get('https://my.mlh.io/api/v2/user.json?access_token=' + mlhToken)
       .then(function (response) {
-        var password = crypto.randomBytes(20).toString('hex');
+        console.log("user exists: " + UserController.doesEmailExist(response.data.data.email));
+        if (UserController.doesEmailExist(response.data.data.email)) {
+          UserController.mlhLogin(response.data.data.email,
+            function(err, token, user){
+              if (err || !user) {
+                return res.status(400).send(err);
+              }
+              return res.json({
+                token: token,
+                mlhToken: mlhToken,
+                user: user
+              });
+            });
+        } else {
+          var randPassword = crypto.randomBytes(20).toString('hex');
 
-        UserController.createUser(response.data.data.email, password,
-          function(err, user){
-            if (err){
-              console.error(err);
-              return res.status(500).send(err);
-            }
+          UserController.createUser(response.data.data.email, randPassword,
+            function(err, user){
+              if (err){
+                return res.status(500).send(err);
+              }
 
-            user.mlhToken = token;
+              user.mlhToken = mlhToken;
 
-            return res.json(user);
-        });
+              return res.json(user);
+          });
+        }
       })
       .catch(function (error) {
         return res.status(500).send(error);

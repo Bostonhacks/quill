@@ -78,6 +78,42 @@ UserController.loginWithToken = function(token, callback){
   });
 };
 
+UserController.doesEmailExist = function(email) {
+  return User
+    .findOneByEmail(email)
+    .exec(function(err, user){
+      if (err) throw err;
+      if (!user) {
+        return false;
+      }
+      return true;
+  });
+};
+
+UserController.mlhLogin = function(email, callback){
+  User
+    .findOneByEmail(email)
+    .exec(function(err, user){
+      if (err) {
+        return callback(err);
+      }
+      if (!user) {
+        return callback({
+          message: "We couldn't find you!"
+        });
+      }
+
+      // yo dope nice login here's a token for your troubles
+      var token = user.generateAuthToken();
+
+      var u = user.toJSON();
+
+      delete u.password;
+
+      return callback(null, token, u);
+  });
+};
+
 /**
  * Login a user given an email and password.
  * @param  {String}   email    Email address
