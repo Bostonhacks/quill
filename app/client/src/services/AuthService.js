@@ -50,7 +50,7 @@ angular.module('reg')
           .success(function(data){
             loginSuccess(data, onSuccess);
           })
-          .error(function(data){
+          .error(function(data, statusCode){
             if (statusCode === 400){
               Session.destroy(loginFailure);
             }

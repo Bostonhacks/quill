@@ -83,6 +83,7 @@ UserController.doesEmailExist = function(email) {
     .findOneByEmail(email)
     .exec(function(err, user){
       if (err) throw err;
+
       if (!user) {
         return false;
       }

@@ -64,32 +64,35 @@ module.exports = function(router){
 
       axios.get('https://my.mlh.io/api/v2/user.json?access_token=' + mlhToken)
       .then(function (response) {
-        if (UserController.doesEmailExist(response.data.data.email)) {
-          UserController.mlhLogin(response.data.data.email,
-            function(err, token, user){
-              if (err || !user) {
-                return res.status(400).send(err);
-              }
-              return res.json({
-                token: token,
-                mlhToken: mlhToken,
-                user: user
+        UserController.doesEmailExist(response.data.data.email).then(function(exists){
+          if (exists) {
+            UserController.mlhLogin(response.data.data.email,
+              function(err, token, user){
+                if (err || !user) {
+                  console.error(err);
+                  return res.status(400).send(err);
+                }
+                return res.json({
+                  token: token,
+                  mlhToken: mlhToken,
+                  user: user
+                });
               });
+          } else {
+            var randPassword = crypto.randomBytes(20).toString('hex');
+
+            UserController.createUser(response.data.data.email, randPassword,
+              function(err, user){
+                if (err){
+                  return res.status(400).send(err);
+                }
+
+                user.mlhToken = mlhToken;
+
+                return res.json(user);
             });
-        } else {
-          var randPassword = crypto.randomBytes(20).toString('hex');
-
-          UserController.createUser(response.data.data.email, randPassword,
-            function(err, user){
-              if (err){
-                return res.status(400).send(err);
-              }
-
-              user.mlhToken = mlhToken;
-
-              return res.json(user);
-          });
-        }
+          }
+        })
       })
       .catch(function (error) {
         return res.status(400).send(error);
@@ -98,7 +101,7 @@ module.exports = function(router){
 
   router.get('/mlh/authorize',
     function(req, res, next){
-      res.send('https://my.mlh.io/oauth/authorize?client_id=' + process.env.MLH_CLIENT_ID + '&redirect_uri=' + process.env.REDIRECT_URI + '&response_type=token&scope=email+demographics');
+      res.send('https://my.mlh.io/oauth/authorize?client_id=' + process.env.MLH_CLIENT_ID + '&redirect_uri=' + process.env.ROOT_URL + '/login&response_type=token&scope=email+demographics');
   }); 
 
   /**
