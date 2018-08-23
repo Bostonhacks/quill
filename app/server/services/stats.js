@@ -17,12 +17,29 @@ function calculateStats(){
         O: 0,
         N: 0
       },
+      ethnicity: {
+        AIAN: 0,
+        API: 0,
+        BAA: 0,
+        H: 0,
+        WC: 0,
+        MCO: 0,
+        N: 0
+      },
+      busLocation: {
+        NYC: 0,
+        Philadelphia: 0,
+        Montreal: 0,
+        Toronto: 0
+      },
       schools: {},
       year: {
+
         '2019': 0,
         '2020': 0,
         '2021': 0,
         '2022': 0,
+
       }
     },
 
@@ -90,6 +107,12 @@ function calculateStats(){
 
         // Add to the gender
         newStats.demo.gender[user.profile.gender] += 1;
+
+        // Add to the ethnicity
+        newStats.demo.ethnicity[user.profile.ethnicity] += 1;
+
+        // Add to the bus location
+        newStats.demo.busLocation[user.profile.busLocation] += 1;
 
         // Count verified
         newStats.verified += user.verified ? 1 : 0;
