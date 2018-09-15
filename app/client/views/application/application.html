@@ -54,14 +54,25 @@
         </div>
 
         <div class="field">
+          <label> Resume (.pdf only!) </label>
+          <input type="file" name="resume" id="resume-input" fileread="resumeFile"> 
+          <!-- <input type="file" id="resume" name="resume"/> -->
+          <!-- <button ng-click="upload_da_resume()">Add</button> -->
+          <!-- <form action="/api/users/resume-upload" enctype="multipart/form-data" method="post">
+            <input type="file" name="resume">
+            <input type="submit" value="Upload">
+          </form> -->
+        </div>
+
+        <div class="field">
           <label>Class Standing</label>
           <select
             name="year"
             ng-model="user.profile.graduationYear">
 
             <option value="highschool">High School</option>
-            <option value="fresh">Freshman</option>
-            <option value="soph">Sophomore</option>
+            <option value="freshman">Freshman</option>
+            <option value="sophomore">Sophomore</option>
             <option value="junior">Junior</option>
             <option value="senior">Senior</option>
             <option value="master">Masters</option>
@@ -76,10 +87,10 @@
             name="gender"
             ng-model="user.profile.gender">
             <option selected disabled hidden>Gender</option>
-            <option value="M">Male</option>
-            <option value="F">Female</option>
-            <option value="O">Other</option>
-            <option value="N">I prefer not to answer.</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+            <option value="other">Other</option>
+            <option value="no-answer">I prefer not to answer.</option>
           </select>
         </div>
 
@@ -97,13 +108,13 @@
             name="ethnicity"
             ng-model="user.profile.ethnicity">
             <option selected disabled hidden>Ethnicity</option>
-            <option value="AIAN">American Indian or Alaskan Native</option>
-            <option value="API">Asian / Pacific Islander</option>
-            <option value="BAA">Black or African American</option>
-            <option value="H">Hispanic</option>
-            <option value="WC">White / Caucasian</option>
-            <option value="MCO">Multiple ethnicity / Other not listed</option>
-            <option value="N">I prefer not to answer.</option>
+            <option value="american-indian">American Indian or Alaskan Native</option>
+            <option value="asian">Asian / Pacific Islander</option>
+            <option value="black">Black or African American</option>
+            <option value="hispanic">Hispanic</option>
+            <option value="white">White / Caucasian</option>
+            <option value="multiple">Multiple ethnicity / Other not listed</option>
+            <option value="no-answer">I prefer not to answer.</option>
           </select>
         </div>
 
@@ -112,7 +123,7 @@
           <select
             name="busLocation"
             ng-model="user.profile.busLocation">
-            <option value="">Bus Location</option>
+            <option selected disabled hidden>Bus Location</option>
             <option value="NYC">New York City</option>
             <option value="Philadelphia">Philadelphia</option>
             <option value="Montreal">Montreal</option>

@@ -12,37 +12,35 @@ function calculateStats(){
     total: 0,
     demo: {
       gender: {
-        M: 0,
-        F: 0,
-        O: 0,
-        N: 0
+        'male': 0,
+        'female': 0,
+        'other': 0,
+        'no-answer': 0
       },
       ethnicity: {
-        AIAN: 0,
-        API: 0,
-        BAA: 0,
-        H: 0,
-        WC: 0,
-        MCO: 0,
-        N: 0
+        'american-indian': 0,
+        'asian': 0,
+        'black': 0,
+        'hispanic': 0,
+        'white': 0,
+        'multiple': 0,
+        'no-answer': 0
       },
       busLocation: {
-        NYC: 0,
-        Philadelphia: 0,
-        Montreal: 0,
-        Toronto: 0
+        'NYC': 0,
+        'Philadelphia': 0,
+        'Montreal': 0,
+        'Toronto': 0
       },
       schools: {},
       year: {
-
         'highschool': 0,
-        'fresh': 0,
-        'soph': 0,
+        'freshman': 0,
+        'sophomore': 0,
         'junior': 0,
         'senior': 0,
         'master': 0,
         'phd': 0,
-
       }
     },
 

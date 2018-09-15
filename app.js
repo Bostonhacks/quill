@@ -7,6 +7,10 @@ var express         = require('express');
 var bodyParser      = require('body-parser');
 var methodOverride  = require('method-override');
 var morgan          = require('morgan');
+const path = require('path');
+//const uploader = require('./app/server/services/upload.js');
+const multer = require('multer');
+var uploader = multer({ dest: 'uploads/' })
 
 var mongoose        = require('mongoose');
 var port            = process.env.PORT || 3000;
@@ -22,10 +26,22 @@ mongoose.connect(database);
 
 app.use(morgan('dev'));
 
+app.post('/api/users/:id/resume-drop', uploader.any(), function(req, res){
+    var id = req.params.id;
+
+    console.log(req.fileAccepted)
+    console.log(req.body)
+    console.log(req.file)
+    console.log(req.files)
+
+    return res.status(269).send({message: "Your error has been recorded, we'll get right on it!"});
+});
+
 app.use(bodyParser.urlencoded({
-  extended: true
+  extended: true,
+  limit: '2mb'
 }));
-app.use(bodyParser.json());
+app.use(bodyParser.json({limit: '2mb'}));
 
 app.use(methodOverride());
 

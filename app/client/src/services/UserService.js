@@ -38,6 +38,35 @@ angular.module('reg')
         return $http.put(base + id + '/profile', {
           profile: profile
         });
+
+        // return $http({
+        //     method: 'POST',
+        //     url: base + id + '/profile',
+        //     headers: {
+        //         'Content-Type': 'undefined'
+        //     },
+        //     data: {
+        //       profile: profile,
+        //       file: resumeFile
+        //     }
+        // });
+        //return $http.put(base + id + '/profile', formData, { transformRequest: angular.identity}); //, headers: {'Content-Type': 'multipart/form-data'}
+      },
+
+      uploadResume: function(id, formData){
+        console.log(formData);
+        //const file = new FormData();
+        //file.append('resume', resume, resume.name);
+        console.log(formData);
+        return $http.post(base + id + '/resume-drop', {file: formData});
+        // return $http({
+        //     method: 'POST',
+        //     url: base + id + '/resume-drop',
+        //     headers: {
+        //         'Content-Type': 'application/pdf'
+        //     },
+        //     file
+        // });
       },
 
       updateConfirmation: function(id, confirmation){

@@ -30,6 +30,7 @@ var profile = {
     required: true,
     default: false
   },
+
   birthdate: {
     type: Date
   },
@@ -40,7 +41,6 @@ var profile = {
     max: 150
   },
   
-
   major: {
     type: String,
     min: 1,
@@ -50,10 +50,15 @@ var profile = {
   graduationYear: {
     type: String,
     enum: {
-
-      values: 'highschool fresh soph junior senior master phd'.split(' '),
-
+      values: 'highschool freshman sophomore junior senior master phd'.split(' '),
     }
+  },
+
+  resumeFilePath: {
+    type: String,
+    min: 1,
+    max: 100,
+    unique: true
   },
 
   description: {
@@ -72,14 +77,14 @@ var profile = {
   gender: {
     type: String,
     enum : {
-      values: 'M F O N'.split(' ')
+      values: 'male female other no-answer'.split(' ')
     }
   },
 
   ethnicity: {
     type: String,
     enum : {
-      values: 'AIAN API BAA H WC MCO N'.split(' ')
+      values: 'american-indian asian black hispanic white multiple no-answer'.split(' ')
     }
   },
 
@@ -374,8 +379,8 @@ schema.statics.validateProfile = function(profile, cb){
     profile.ethnicity &&
     profile.school.length > 0 &&
     profile.major.length > 0 &&
-    ['highschool', 'fresh', 'soph', 'junior', 'senior', 'master', 'phd'].indexOf(profile.graduationYear) > -1 &&
-    ['M', 'F', 'O', 'N'].indexOf(profile.gender) > -1
+    ['highschool', 'freshmore', 'sophomore', 'junior', 'senior', 'master', 'phd'].indexOf(profile.graduationYear) > -1 &&
+    ['male', 'female', 'other', 'no-answer'].indexOf(profile.gender) > -1
     ));
 };
 

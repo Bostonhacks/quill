@@ -19,13 +19,16 @@ angular.module("reg").controller("ApplicationCtrl", [
   ) {
     // Set up the user
     $scope.user = currentUser.data;
+    $scope.resumeFile = null;
 
     // Formatting for the birthday so it shows on the UI.
     $scope.user.profile.birthdate = new Date(
       currentUser.data.profile.birthdate
     );
 
-    // Is the student from MIT?
+    $scope.user.profile.resume = 
+
+    // Is the student from BU?
     $scope.isBUStudent = $scope.user.email.split("@")[1] == "bu.edu";
 
     // If so, default them to adult: true
@@ -75,6 +78,12 @@ angular.module("reg").controller("ApplicationCtrl", [
     }
 
     function _updateUser(e) {
+      // var fd = new FormData();
+      // fd.append('file', $scope.resumeFile);
+      // fd.append('profile', angular.toJson($scope.user.profile));
+
+      //console.log(fd);
+
       UserService.updateProfile(Session.getUserId(), $scope.user.profile)
         .success(function(data) {
           sweetAlert(
@@ -91,6 +100,32 @@ angular.module("reg").controller("ApplicationCtrl", [
         })
         .error(function(res) {
           sweetAlert("Uh oh!", "Something went wrong.", "error");
+        });
+    } 
+
+    // $scope.upload_da_resume = function() {
+    //     console.log("Fuck me")
+    //     var f = document.getElementById('resume').files[0],
+    //         r = new FileReader();
+
+    //     r.onloadend = function(e) {
+    //       var data = e.target.result;
+    //       //send your binary data via $http or $resource or do anything else with it
+    //     }
+
+    //     r.readAsBinaryString(f);
+    // }
+
+    function _uploadResume() {
+      var fd = new FormData();
+      fd.append('resume', $scope.resumeFile);
+
+      UserService.uploadResume(Session.getUserId(), fd)
+        .success(function(data) {
+          console.log("upload made")
+        })
+        .error(function(res) {
+          console.log("upload failed for some reason")
         });
     }
 
@@ -208,7 +243,8 @@ angular.module("reg").controller("ApplicationCtrl", [
 
     $scope.submitForm = function() {
       if ($(".ui.form").form("is valid")) {
-        _updateUser();
+        _uploadResume();
+        //_updateUser();
       } else {
         sweetAlert("Uh oh!", "Please Fill The Required Fields", "error");
       }

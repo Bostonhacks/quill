@@ -2,6 +2,7 @@ var UserController = require('../controllers/UserController');
 var SettingsController = require('../controllers/SettingsController');
 
 var request = require('request');
+const uploader = require('../services/upload.js');
 
 module.exports = function(router) {
 
@@ -99,6 +100,7 @@ module.exports = function(router) {
               }
             );
         } else {
+          console.log(err)
           return res.status(500).send(err);
         }
       } else {
@@ -156,11 +158,38 @@ module.exports = function(router) {
    *
    * PUT - Update a specific user's profile.
    */
-  router.put('/users/:id/profile', isOwnerOrAdmin, function(req, res){
+  router.put('/users/:id/profile', isOwnerOrAdmin, uploader.single('file'), function(req, res){
     var profile = req.body.profile;
     var id = req.params.id;
 
-    UserController.updateProfileById(id, profile , defaultResponse(req, res));
+    UserController.updateProfileById(id, profile, defaultResponse(req, res));
+  });
+
+  /**
+   * [OWNER/ADMIN]
+   *
+   * POST - Upload a resume for the user
+   */
+  // router.post('/users/:id/resume-drop', isOwnerOrAdmin, uploader.single('resume'), function(req, res){
+  //   var id = req.params.id;
+
+  //   console.log(req.fileAccepted)
+  //   console.log(req.body)
+  //   console.log(req.file)
+  //   console.log(req.files)
+
+  //   UserController.uploadResumeById(id, defaultResponse(req, res));
+  // });
+
+  router.post('/users/resume-upload', isOwnerOrAdmin, uploader.single('resume'), function(req, res){
+    var id = req.params.id;
+
+    console.log(req.fileAccepted)
+    console.log(req.body)
+    console.log(req.file)
+    console.log(req.files)
+
+    UserController.uploadResumeById(id, defaultResponse(req, res));
   });
 
   /**

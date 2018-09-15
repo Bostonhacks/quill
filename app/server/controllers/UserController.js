@@ -6,6 +6,7 @@ var Stats = require('../services/stats');
 
 var validator = require('validator');
 var moment = require('moment');
+const uploader = require('../services/upload.js');
 
 var UserController = {};
 
@@ -60,7 +61,7 @@ function canRegister(email, password, callback){
         }
       }
       return callback({
-        message: "Not a valid educational email."
+        message: "Not a valid educational email. Email us if you think this is a mistake."
       }, false);
     });
 
@@ -314,6 +315,13 @@ UserController.updateProfileById = function (id, profile, callback){
 
   });
 };
+
+UserController.uploadResumeById = function(id, callback) {
+  console.log("YO FUCK ME YEA")
+  return callback({
+    message: "RESUME UPLOADED YOU FUCK"
+  });
+}
 
 /**
  * Update a user's confirmation object, given an id and a confirmation.
